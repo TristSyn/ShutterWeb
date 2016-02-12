@@ -1,0 +1,27 @@
+body {background-color: rgb(225, 236, 252); font-family: verdana, arial; }
+#main {background-color:white;}
+#topmenu {clear:both;}
+
+
+#banner .pageheading {padding-top:50px;}
+#banner  img {float:left;}
+
+.navbar-secondary { min-height:20px;}
+.navbar-secondary  .navbar-nav > li > a {padding-top:5px; padding-bottom:5px;}
+.navbar-secondary  .navbar-toggle { padding:5px; margin-top:2px; margin-bottom:2px;}
+.navbar-secondary  .navbar-toggle .icon-bar {width:16px; margin-top:2px;}
+.navbar-secondary  .navbar-brand {height:20px; padding-top:5px;padding-bottom:5px;}
+
+.browsefile {width:200px; border:1px solid #EEE; display:inline-block;}
+.browsefile img {margin:auto; display:block;}
+
+#timelapseSettings[disabled] { color:grey;}
+#saveToServerSettings[disabled] { color:grey;}
+
+/* restructure a bit when viewing on smaller devices */
+@media(max-width:767px) {
+	#banner .pageheading {margin-top:5px;padding-top:0px;}
+	.navtopright.navbar-toggle {margin-right:0px;}
+	.navtopright  {border-width:0px;background-image:none; background-color:inherit;box-shadow:none;}
+	.navbar-secondary {margin-bottom:10px;box-shadow:none;border-color:white;min-height:0px;}
+}
