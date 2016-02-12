@@ -1,6 +1,14 @@
 # ShutterWeb
 A web front end for gphoto2. Allows user to configure camera settings and take photos or a timelapse of photos.
 
+<h3>Requirements & Instructions</h3>
+<p>gPhoto2 is a core requirement for this software to work.This is a PHP project that is confirmed to run on Apache.  I'm using a Rikomagic stick (MK802 - Allwinner A10) but equally I'm sure a RaspberryPI would work.</p>
+<p>
+	I think I had to run this to get Apache/PHP to be able to send commands to gphoto2:<br/>
+	<code>chmod +s /usr/bin/gphoto2</code>
+</p>
+
+
 <h3>Notes on use & known issues</h3>
 <ul>
 	<li>Raw images have not been considered as it isn't part of my usecase. Don't expect thumbnails or the image popup to work.</li>
