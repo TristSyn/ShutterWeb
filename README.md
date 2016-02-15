@@ -12,7 +12,7 @@ chmod +s /usr/bin/gphoto2
 
 This project was designed to run well on mobile clients as that was my use case. See below the side-by-side comparison of the desktop version and the mobile version of the same page:
 
-[![desktopscreenshot](http://i.imgur.com/WNSNAWW.png)](http://www.google.com/) [![mobilescreenshot](http://i.imgur.com/SRaDPq1.png)](http://www.google.com/)<br>
+[![desktopscreenshot](http://i.imgur.com/WNSNAWW.png)](http://i.imgur.com/RrHiYz9.png) [![mobilescreenshot](http://i.imgur.com/SRaDPq1.png)](http://i.imgur.com/T0bAh17.png)<br>
 
 ## Notes on use & known issues
 
