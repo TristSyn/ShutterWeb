@@ -266,9 +266,9 @@
 			return './photos/'.$imagefile;
 		}
 
-		public function StartTimelapse($params, $name, $shotdelay, $shotcount) {
+		public function StartTimelapse($name, $shotdelay, $shotcount, $saveToCamera, $saveToServer, $saveLocation, $params) {
 			$this->SetValues($params);
-			$this->Timelapse = new Timelapse($name, $shotdelay, $shotcount);
+			$this->Timelapse = new Timelapse($name, $shotdelay, $shotcount, $saveToCamera, $saveToServer, $saveLocation);
 			$this->Timelapse->Start($this->Port);
 			$this->Persist();
 			return $this->Timelapse;
@@ -346,17 +346,37 @@
 		public $Delay;
 		public $Count;
 		protected $Folder;
+		protected $SaveToCamera;
+		protected $SaveToServer;
+		protected $SaveLocation;
 		
-		public function __construct($name, $delay, $count) {
+		public function __construct($name, $delay, $count, $saveToCamera, $saveToServer, $saveLocation) {
 			$this->Name = $name;
 			$this->Delay = $delay;
 			$this->Count = $count;
+			$this->SaveToCamera = $saveToCamera;
+			$this->SaveToServer = $saveToServer;
+			$this->SaveLocation = $saveLocation;
 		}
-		
+
 		public function Start($port) {
-			$imagefileFormat= '%n.jpg';
-			$cmd = '  -I '.$this->Delay.' -F '.$this->Count.' --capture-image-and-download --keep --filename latest.jpg';
+			//$cmd = '  -I '.$this->Delay.' -F '.$this->Count.' --capture-image-and-download --keep --filename latest.jpg';
+			//GPHOTO2::GP2_CommandEx($cmd.' --port '.$port.' > /dev/null &', false, false);
+			//$imagefile= date('Y-m-d_H_i_s').'.jpg';
+			$cmd = '  -I '.$this->Delay.' -F '.$this->Count.' --capture-image-and-download';
+			if($this->SaveToCamera === 'false')
+				$cmd .= " --no-keep";
+			
+			$filename = $this->SaveToServer === 'true' ? $this->SaveLocation."%Y-%m-%d_%H_%M_%S.jpg" : 'latest.jpg';
+			$cmd .= ' --filename '.$filename;
+			
+			//GPHOTO2::GP2_PortCommand($port, $cmd.' --filename latest.jpg', true, false);
 			GPHOTO2::GP2_CommandEx($cmd.' --port '.$port.' > /dev/null &', false, false);
+			
+			//if($this->SaveToServer === 'true') {
+			//	error_log("Saving latest.jpg\r\n", 3, "/var/www/shutterweb/logging.log");
+			//	copy($this->SaveLocation.date('Y-m-d_H_i_s').'.jpg', "latest.jpg");
+			//}
 		}
 		
 		public function Done() {

@@ -21,9 +21,8 @@ This project was designed to run well on mobile clients as that was my use case.
 * Browse is very very BETA and hasn't been tested much at all
 * Focal lengths are read and saved so swapping lens' isn't handled. No current workaround other than deleting the corresponding camera setting file in the cameraconfigs folder
 * Just on this, gphoto2 refers to all images via an index so if an image index is requested for a thumbnail or to view and that image's index has changed, then the image returned will not be the expected one.
-* Some (most?) cameras cannot have the shooting mode changed by the software as the camera always obeys the wheel. There may be an issue with turning off in one mode, and turning back on in another.
-* For such cameras, changing the shooting mode is assumed to have been successful when it in fact hasn't been. The corresponding loaded settings may reflect the values applicable to the actual mode set on the camera.
 * I've only got a Nikon DSLR and a Canon Point&Shoot to test.  All other brands are likely to not work properly until I can configure their respective shooting mode setting.
+* "Saving to Server" during a timelapse results in the latest.jpg not updating
 
 #TODO:
 

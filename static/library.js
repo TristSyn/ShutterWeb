@@ -48,6 +48,7 @@ function HighlightSavedSetting(target, success) {
 	
 }
 
+/* Start a timelapse and then reload the page (to get the progress bar at the top) */
 function startTimelapse() {
 	var $url = "services.php?type=startTimelapse";
 	var $params="";
@@ -61,17 +62,28 @@ function startTimelapse() {
 				
 			}
 		});
-	if($params != "")
-		$url += "&params=" + $params;
+		
 	$.post(
 			$url, 
-			{ name: $("#timelapsename").val(), shotdelay: $("#shotdelay").val(), shotcount:  $("#shotcount").val() },
+			{ 
+				name: $("#timelapsename").val(), 
+				shotdelay: $("#shotdelay").val(), 
+				shotcount:  $("#shotcount").val(),
+				saveToCamera:  $("#saveToCamera").prop('checked'), 
+				saveToServer: $("#saveToServer").prop('checked'), 
+				saveLocation:  $("#saveLocation").val(), 
+				params: $params 
+			},
 			null,
 			'json'
 		)
 		.done(
 			function(data) { 
 				location.reload();
+			})
+		.fail(
+			function(jqXHR, textStatus, errorThrown) {
+				alert( errorThrown );
 			});
 }
 
@@ -88,14 +100,17 @@ function takePicture() {
 				
 			}
 		});
-	if($params != "")
-		$url += "&params=" + $params;
 	
 	showPhoto("images/loading.gif", true);
 	
 	$.post(
 			$url,
-			{ saveToCamera:  $("#saveToCamera").prop('checked'), saveToServer: $("#saveToServer").prop('checked'), saveLocation:  $("#saveLocation").val(), params: $params },
+			{ 
+				saveToCamera:  $("#saveToCamera").prop('checked'), 
+				saveToServer: $("#saveToServer").prop('checked'), 
+				saveLocation:  $("#saveLocation").val(), 
+				params: $params 
+			},
 			null,
 			'json'
 		)
@@ -197,7 +212,7 @@ function showPhoto(url, show) {
 }
 
 function showLatest(show) {
-	showPhoto("latest.jpg?"+ (new Date().getTime()), show);
+	showPhoto("latest.jpg", show);
 }
 
 function toggleDisabled(id) {

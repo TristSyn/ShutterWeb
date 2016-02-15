@@ -16,7 +16,7 @@
 				break;
 			case "startTimelapse":
 				header('Content-Type: application/json');
-				$tl = $cam->StartTimelapse($params, $_POST["name"], $_POST["shotdelay"], $_POST["shotcount"]);
+				$tl = $cam->StartTimelapse($_POST["name"], $_POST["shotdelay"], $_POST["shotcount"], $_POST["saveToCamera"], $_POST["saveToServer"], $_POST["saveLocation"], $_POST["params"] );
 				echo "{ \"done\" : ".$tl->Done().", \"count\":".$tl->Count."}";
 				break;
 			case "setValue":
