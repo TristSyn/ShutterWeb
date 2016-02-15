@@ -12,7 +12,7 @@ A web front end for gphoto2. Allows user to configure camera settings and take p
 	<figcaption>ShutterWeb as viewed on a desktop browser.</figcaption>
 </figure>
 <figure style="float:right;">
-	<img src="http://i.imgur.com/T0bAh17.png" style="height:460px;" />
+	![Alt text](http://i.imgur.com/T0bAh17.png "Optional title")
 	<figcaption>ShutterWeb as viewed with a mobile device</figcaption>
 </figure>
 <div style="clear:both;"></div>
