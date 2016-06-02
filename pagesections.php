@@ -111,7 +111,7 @@
 							<div class="form-group ">
 								<label class="col-md-5 control-label">Save location</label>
 								<div class="col-md-7">
-									<input type="text" class="form-control" id="saveLocation" value="photos/" />
+									<input type="text" class="form-control" id="saveLocation" value="./photos" />
 								</div>
 							</div>
 						</fieldset>
@@ -142,6 +142,7 @@
 							</div>
 						</fieldset>
 						<button class="btn btn-default " <?php echo ($cam->Timelapse != null ? " disabled='disabled' title='Timelapse running'" : "")?> onclick="takePicture()">Take Picture</button>
+						<button class="btn btn-link" onclick="prompt('Timelapse Url', getStartTimelapseUrl()); return false;" style="float:right;">As Url</button>
 						<button class="btn btn-default " <?php echo ($cam->Timelapse != null ? " disabled='disabled' title='Timelapse running'" : "")?> onclick="startTimelapse()" style="float:right;">Start timelapse</button>
 					</div>
 				</div>
@@ -154,6 +155,7 @@
 					<div class="panel-body form-horizontal collapse in" id="divcapturesettings">
 						<?php Section_CaptureSettings($cam, true); ?>
 						<div load="?load=capturesettings"></div>
+						<button class="btn btn-link" onclick="prompt('Current Settings Url', getCurrentSettingsUrl()); return false;">Current Settings Url</button>
 					</div>
 				</div>
 			</div>
@@ -191,7 +193,7 @@
 										foreach($folders as $key => $value) {
 											if($key != '0') {
 												?>
-												<div onclick="return getFilesInFolder('<?php echo $key; ?>');">
+												<div class="browsefolder" onclick="return getFilesInFolder('<?php echo $key; ?>');">
 													<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> <?php echo $key; ?>
 												</div>
 												<?php

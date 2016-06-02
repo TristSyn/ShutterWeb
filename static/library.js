@@ -87,6 +87,33 @@ function startTimelapse() {
 			});
 }
 
+function getStartTimelapseUrl() {
+	var $url = "services.php?type=startTimelapse"
+		+ "&name=" + $("#timelapsename").val()
+		+ "&shotdelay=" + $("#shotdelay").val()
+		+ "&shotcount=" + $("#shotcount").val()
+		+ "&saveToCamera=" + $("#saveToCamera").prop('checked')
+		+ "&saveToServer=" + $("#saveToServer").prop('checked')
+		+ "&saveLocation=" + $("#saveLocation").val()
+		+ "&params=";
+	return $url;
+}
+
+function getCurrentSettingsUrl() {
+	var $url = "services.php?type=setValues";
+	var $params="";
+	$("select[config]").each(
+		function() {
+			var $opt = $(this).find("option:selected");
+			
+			if($params != "")
+				$params+="|";
+			$params+= $(this).attr("config")  + "=" + $opt.val();
+			
+		});
+	return $url + "&params=" + $params;
+}
+
 function takePicture() {
 	var $url = "services.php?type=capture";
 	var $params="";
@@ -158,20 +185,24 @@ function getFilesInFolder(folder) {
 		$("#filesInFolder").html('');
 		$.each(data, 
 			function(i, item) {
-				$("#filesInFolder").append("<div class='browsefile' data-idx='"+(i+1).toString()+"'><img src='"+thumbplaceholderimg+"' /><br/>" +item.File + "</div>");
+				$("#filesInFolder").append("<div class='browsefile' data-idx='"+(i+1).toString()+"'><img src='"+thumbplaceholderimg+"' /><br/><label>" +item.File + "</label></div>");
 				
 			});
 
 		//set click events to get thumbnail
-		$(".browsefile").mouseover(
+		$(".browsefile img").mouseover(
 			function() {
-				if($(this).find("img[src='"+thumbplaceholderimg+"']").length > 0)
-					showThumbnail($(this), $(this).attr('data-idx'));
+				if($(this).attr("src") == thumbplaceholderimg)
+					showThumbnail($(this), $(this).parent().attr('data-idx'));
 			});
-		$(".browsefile").click(
+		$(".browsefile img").click(
 			function() {
-				grabPhoto($(this).attr('data-idx'));
+				grabPhoto($(this).parent().attr('data-idx'));
 			});
+		/*$(".browsefile label").click(
+			function() {
+				grabPhotoExif($(this).parent().attr('data-idx'));
+			});*/
 	  });
 	return false;
 }

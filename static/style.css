@@ -12,8 +12,10 @@ body {background-color: rgb(225, 236, 252); font-family: verdana, arial; }
 .navbar-secondary  .navbar-toggle .icon-bar {width:16px; margin-top:2px;}
 .navbar-secondary  .navbar-brand {height:20px; padding-top:5px;padding-bottom:5px;}
 
+.browsefolder {cursor:pointer;}
 .browsefile {width:200px; border:1px solid #EEE; display:inline-block;}
-.browsefile img {margin:auto; display:block;}
+.browsefile img {margin:auto; display:block; cursor:pointer;}
+.browsefile label {cursor:pointer;}
 
 #timelapseSettings[disabled] { color:grey;}
 #saveToServerSettings[disabled] { color:grey;}

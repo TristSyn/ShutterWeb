@@ -97,6 +97,15 @@
 			}
 			return null;
 		}
+		
+		public static function SelectFirstCamera() {
+			self::loadCameras();
+			foreach(self::$cameras as $cam) {
+				$_SESSION['selectedCamera'] = $cam->Port;
+				return $cam;
+			}
+			
+		}
 	}
 
 	class Camera {
@@ -243,10 +252,21 @@
 					$config = $this->Config($name);
 					$opt = $config->GetOption($val);
 					$cmdParams .= ' --set-config-value '.$name.'="'.$opt->Name.'"';
-					$config->SetCurrent($val);
+					//$config->SetCurrent($val);
 				}
 				
-				GPHOTO2::GP2_PortCommand($this->Port, $cmdParams, true, false);
+				$result = GPHOTO2::GP2_PortCommand($this->Port, $cmdParams, true, false);
+				if(strpos($result, 'error') === false) {
+					foreach($paramList as &$param) {
+						$index = strpos($param, "=");
+						$name = substr($param, 0, $index);
+						$val= substr($param, $index+1);
+						$config = $this->Config($name);
+						$config->SetCurrent($val);
+					}
+					return true;
+				} else 
+					return false;
 			}
 		}
 
@@ -256,11 +276,15 @@
 			$cmd = "--capture-image-and-download";//$saveToServer === 'true' ? "--capture-image-and-download" : "--capture-image";
 			if($saveToCamera === 'false')
 				$cmd .= " --no-keep";
+
 			GPHOTO2::GP2_PortCommand($this->Port, $cmd.' --filename latest.jpg', true, false);
 			
 			if($saveToServer === 'true') {
-				error_log("Copying latest to ".$saveLocation.$imagefile."\r\n", 3, "/var/www/shutterweb/logging.log");
-				copy("latest.jpg", $saveLocation.$imagefile);
+				if(!file_exists($saveLocation))
+					mkdir($saveLocation, 0777, true);
+			
+				error_log("Copying latest to ".$saveLocation."/".$imagefile."\r\n", 3, "/var/www/shutterweb/logging.log");
+				copy("latest.jpg", $saveLocation."/".$imagefile);
 			}
 			
 			return './photos/'.$imagefile;
@@ -366,8 +390,10 @@
 			$cmd = '  -I '.$this->Delay.' -F '.$this->Count.' --capture-image-and-download';
 			if($this->SaveToCamera === 'false')
 				$cmd .= " --no-keep";
-			
-			$filename = $this->SaveToServer === 'true' ? $this->SaveLocation."%Y-%m-%d_%H_%M_%S.jpg" : 'latest.jpg';
+			if($this->SaveToServer === 'true' && !file_exists($this->SaveLocation."/".$this->Name))
+				mkdir($this->SaveLocation."/".$this->Name, 0777, true);
+			//echo $this->SaveLocation."/".$this->Name;
+			$filename = $this->SaveToServer === 'true' ? $this->SaveLocation."/".$this->Name."/%Y-%m-%d_%H_%M_%S.jpg" : 'latest.jpg';
 			$cmd .= ' --filename '.$filename;
 			
 			//GPHOTO2::GP2_PortCommand($port, $cmd.' --filename latest.jpg', true, false);
@@ -380,8 +406,13 @@
 		}
 		
 		public function Done() {
-			$fi = new FilesystemIterator($this->Folder, FilesystemIterator::SKIP_DOTS);
-			$Done = iterator_count($fi);
+			//$fi = new FilesystemIterator($this->SaveLocation, FilesystemIterator::SKIP_DOTS);
+			//$Done = iterator_count($fi);
+			$Done = 0;
+			$files = glob($this->SaveLocation."/".$this->Name."/*");
+			if ($files){
+				$Done = count($files);
+			}
 			
 			return $Done;
 		}
